@@ -69,7 +69,7 @@ async function syncFromBlynk() {
     console.log(`✓ [Blynk Sync] Data synced successfully!`);
     console.log(`  Temp: ${data.temperature}°C, Humidity: ${data.humidity}%, Battery: ${data.battery}%`);
 
-    // Analyze temperature with AI
+    // Always analyze temperature - will only update if changed significantly
     const analysis = await analyzeTemperature(data.temperature, data.humidity);
     if (analysis) {
       console.log('🤖 [AI Analysis] Status:', analysis.status);

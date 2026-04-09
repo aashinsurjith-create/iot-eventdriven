@@ -330,13 +330,33 @@ function updateAIAnalysis(analysis) {
     
     // Update status badge color
     statusElement.className = 'ai-status-badge';
+    let statusClass = '';
     if (status.includes('SAFE') || status.includes('NORMAL')) {
-        statusElement.classList.add('safe');
+        statusClass = 'safe';
     } else if (status.includes('WARNING')) {
-        statusElement.classList.add('warning');
+        statusClass = 'warning';
     } else if (status.includes('DANGER')) {
-        statusElement.classList.add('danger');
+        statusClass = 'danger';
     }
+    statusElement.classList.add(statusClass);
+    
+    // Update all card border colors based on status
+    const cards = document.querySelectorAll('.ai-card');
+    cards.forEach(card => {
+        card.style.borderColor = '';
+        card.style.boxShadow = '';
+        
+        if (statusClass === 'safe') {
+            card.style.borderColor = 'var(--accent-green)';
+            card.style.boxShadow = '0 8px 32px rgba(0, 255, 136, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)';
+        } else if (statusClass === 'warning') {
+            card.style.borderColor = 'var(--accent-orange)';
+            card.style.boxShadow = '0 8px 32px rgba(255, 140, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)';
+        } else if (statusClass === 'danger') {
+            card.style.borderColor = 'var(--accent-red)';
+            card.style.boxShadow = '0 8px 32px rgba(255, 68, 68, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)';
+        }
+    });
 }
 
 // ============================================

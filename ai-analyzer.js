@@ -6,7 +6,9 @@
 const pool = require('./db');
 
 let lastAnalysisTime = 0;
-const ANALYSIS_INTERVAL = 30000; // Analyze every 30 seconds
+let lastAnalyzedTemp = null;
+const ANALYSIS_INTERVAL = 5000; // Analyze every 5 seconds
+const TEMP_CHANGE_THRESHOLD = 0.5; // Trigger analysis if temp changes by 0.5°C
 
 function analyzeTemperatureLocally(temperature, humidity) {
   // Get current hour to consider time-based schedule
@@ -118,17 +120,26 @@ function analyzeTemperatureLocally(temperature, humidity) {
 async function analyzeTemperature(temperature, humidity) {
   try {
     const now = Date.now();
-    if (lastAnalysisTime && (now - lastAnalysisTime) < ANALYSIS_INTERVAL) {
+    
+    // Check if temperature changed significantly or enough time has passed
+    const tempChanged = lastAnalyzedTemp === null || Math.abs(temperature - lastAnalyzedTemp) >= TEMP_CHANGE_THRESHOLD;
+    const timeElapsed = !lastAnalysisTime || (now - lastAnalysisTime) >= ANALYSIS_INTERVAL;
+    
+    if (!tempChanged && !timeElapsed) {
       return null;
     }
 
     console.log('\n🤖 [AI Analyzer] Analyzing temperature: ' + temperature + '°C');
+    if (tempChanged && lastAnalyzedTemp !== null) {
+      console.log('   Temperature changed from ' + lastAnalyzedTemp.toFixed(1) + '°C to ' + temperature.toFixed(1) + '°C');
+    }
 
     const analysis = analyzeTemperatureLocally(temperature, humidity);
     
     // Store analysis in database
     await storeAnalysis(temperature, humidity, analysis);
 
+    lastAnalyzedTemp = temperature;
     lastAnalysisTime = now;
     return analysis;
 
