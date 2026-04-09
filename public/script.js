@@ -80,6 +80,14 @@ async function fetchAndUpdateData() {
             updateStatistics(statsData.data);
         }
 
+        // Fetch AI analysis
+        const aiResponse = await fetch(`${API_BASE_URL}/ai-analysis`);
+        const aiData = await aiResponse.json();
+
+        if (aiData.success) {
+            updateAIAnalysis(aiData.data);
+        }
+
     } catch (error) {
         console.error('Error fetching data:', error);
     }
@@ -305,6 +313,30 @@ function updateStatistics(stats) {
     document.getElementById('stat-avg-temp').textContent = !isNaN(avgTemp) ? avgTemp.toFixed(1) + '°C' : '--°C';
     document.getElementById('stat-avg-humidity').textContent = !isNaN(avgHumidity) ? avgHumidity.toFixed(1) + '%' : '--%';
     document.getElementById('stat-events').textContent = stats.event_count || 0;
+}
+
+// ============================================
+// UPDATE AI ANALYSIS
+// ============================================
+
+function updateAIAnalysis(analysis) {
+    document.getElementById('ai-ac').textContent = analysis.ac_recommendation || 'Analyzing...';
+    document.getElementById('ai-env').textContent = analysis.environmental_impact || 'Analyzing...';
+    document.getElementById('ai-health').textContent = analysis.health_impact || 'Analyzing...';
+    
+    const statusElement = document.getElementById('ai-status');
+    const status = (analysis.status || 'ANALYZING').toUpperCase();
+    statusElement.textContent = status;
+    
+    // Update status badge color
+    statusElement.className = 'ai-status-badge';
+    if (status.includes('SAFE') || status.includes('NORMAL')) {
+        statusElement.classList.add('safe');
+    } else if (status.includes('WARNING')) {
+        statusElement.classList.add('warning');
+    } else if (status.includes('DANGER')) {
+        statusElement.classList.add('danger');
+    }
 }
 
 // ============================================

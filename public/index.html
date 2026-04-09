@@ -9,16 +9,17 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-content">
-                <h1>🚀 Arduino IoT Dashboard</h1>
-                <p class="subtitle">Real-time Sensor Monitoring System</p>
-            </div>
-        </header>
+        <div class="dashboard-wrapper">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-content">
+                    <h1>📊 IoT Sensor Hub</h1>
+                    <p class="subtitle">Real-time Environmental Monitoring System</p>
+                </div>
+            </header>
 
-        <!-- Main Content -->
-        <main class="main-content">
+            <!-- Main Content -->
+            <main class="main-content">
             <!-- Live Data Cards Section -->
             <section class="cards-section">
                 <h2 class="section-title">Live Sensor Data</h2>
@@ -190,12 +191,37 @@
                     </div>
                 </div>
             </section>
+
+            <!-- AI Analysis Section -->
+            <section class="ai-section">
+                <h2 class="section-title">🤖 AI Environmental Analysis</h2>
+                <div class="ai-container">
+                    <div class="ai-card">
+                        <h3>AC/Cooling Recommendation</h3>
+                        <p id="ai-ac" class="ai-content">Analyzing...</p>
+                    </div>
+                    <div class="ai-card">
+                        <h3>Environmental Impact</h3>
+                        <p id="ai-env" class="ai-content">Analyzing...</p>
+                    </div>
+                    <div class="ai-card">
+                        <h3>Health Impact</h3>
+                        <p id="ai-health" class="ai-content">Analyzing...</p>
+                    </div>
+                    <div class="ai-card ai-status">
+                        <h3>Overall Status</h3>
+                        <p id="ai-status" class="ai-status-badge">ANALYZING</p>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <!-- Footer -->
         <footer class="footer">
-            <p>Arduino UNO R4 WiFi IoT Dashboard | Auto-refresh every 2 seconds</p>
+            <p>IoT Sensor Hub | Real-time Monitoring | Auto-refresh every 2 seconds</p>
         </footer>
+            </main>
+        </div>
     </div>
 
     <script src="script.js"></script>

@@ -185,10 +185,12 @@ void loop() {
   // Read battery voltage from A0
   int raw = analogRead(A0);
   float vA0 = (raw / ADC_RESOLUTION) * VREF;
-  float batteryVoltage = vA0 * 2.0;
-  float percentage = ((batteryVoltage - 1.0) / (1.5 - 1.0)) * 100;
+  
+  // Battery calculation for low voltage battery (0.1V to 0.3V range)
+  // 0.3V = 100% (fully charged)
+  // 0.1V = 0% (dead)
+  float percentage = ((vA0 - 0.1) / (0.3 - 0.1)) * 100;
 
-  // Constrain battery percentage
   if (percentage > 100) percentage = 100;
   if (percentage < 0) percentage = 0;
 

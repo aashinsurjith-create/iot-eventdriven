@@ -5,6 +5,7 @@
 
 const axios = require('axios');
 const pool = require('./db');
+const { analyzeTemperature } = require('./ai-analyzer');
 
 const BLYNK_AUTH_TOKEN = 'Mqg3EWzG_Z-jEQm2thIbFtJ6kkuetb8n';
 const BLYNK_API_URL = 'https://blynk.cloud/external/api/get';
@@ -67,6 +68,13 @@ async function syncFromBlynk() {
 
     console.log(`✓ [Blynk Sync] Data synced successfully!`);
     console.log(`  Temp: ${data.temperature}°C, Humidity: ${data.humidity}%, Battery: ${data.battery}%`);
+
+    // Analyze temperature with AI
+    const analysis = await analyzeTemperature(data.temperature, data.humidity);
+    if (analysis) {
+      console.log('🤖 [AI Analysis] Status:', analysis.status);
+      console.log('   AC Recommendation:', analysis.ac_recommendation?.substring(0, 80) + '...');
+    }
 
   } catch (error) {
     console.error('[Blynk Sync] Error:', error.message);

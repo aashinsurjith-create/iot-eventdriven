@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const pool = require('./db');
+const { getLatestAnalysis } = require('./ai-analyzer');
 
 const app = express();
 const PORT = 3000;
@@ -210,6 +211,33 @@ app.get('/api/health', (req, res) => {
     message: 'Server is running',
     timestamp: new Date().toISOString()
   });
+});
+
+// GET /api/ai-analysis - Get latest AI analysis
+app.get('/api/ai-analysis', async (req, res) => {
+  try {
+    const analysis = await getLatestAnalysis();
+    
+    if (!analysis) {
+      return res.status(404).json({
+        success: false,
+        message: 'No AI analysis available yet'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: analysis
+    });
+
+  } catch (error) {
+    console.error('Error fetching AI analysis:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching AI analysis',
+      error: error.message
+    });
+  }
 });
 
 // Serve the main dashboard page

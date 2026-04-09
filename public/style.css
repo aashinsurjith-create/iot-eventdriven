@@ -1,5 +1,5 @@
 /* ============================================
-   IoT Dashboard - Professional Styling
+   IoT Dashboard - Enhanced Professional Styling
    ============================================ */
 
 * {
@@ -23,20 +23,35 @@
     --accent-green: #00ff88;
     --accent-orange: #ff8c00;
     --accent-red: #ff4444;
+    --accent-purple: #b366ff;
+    --accent-pink: #ff66b2;
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, var(--dark-bg) 0%, #0f1535 100%);
+    background: linear-gradient(135deg, var(--dark-bg) 0%, #0f1535 50%, #1a0a2e 100%);
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
+    width: 100%;
+}
+
+.dashboard-wrapper {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.95) 0%, rgba(42, 48, 80, 0.95) 100%);
+    border: 2px solid var(--border-color);
+    border-radius: 20px;
+    padding: 40px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 /* ============================================
@@ -44,27 +59,50 @@ body {
    ============================================ */
 
 .header {
-    background: linear-gradient(135deg, rgba(0, 102, 204, 0.1) 0%, rgba(0, 168, 232, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(0, 102, 204, 0.15) 0%, rgba(0, 168, 232, 0.15) 50%, rgba(179, 102, 255, 0.1) 100%);
     border: 2px solid var(--border-color);
-    border-radius: 12px;
-    padding: 30px;
-    margin-bottom: 30px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(0, 102, 204, 0.1);
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 40px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 102, 204, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.header-content {
+    position: relative;
+    z-index: 1;
 }
 
 .header-content h1 {
-    font-size: 2.5em;
-    margin-bottom: 5px;
-    background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
+    font-size: 3em;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-green), var(--accent-purple));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    font-weight: 800;
+    letter-spacing: -1px;
 }
 
 .subtitle {
     color: var(--text-secondary);
-    font-size: 0.95em;
+    font-size: 1.1em;
+    font-weight: 300;
+    letter-spacing: 1px;
 }
 
 /* Status Badge Styles */
@@ -87,14 +125,15 @@ body {
 }
 
 .card {
-    background: linear-gradient(135deg, rgba(26, 31, 58, 0.8) 0%, rgba(42, 48, 80, 0.8) 100%);
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.9) 0%, rgba(42, 48, 80, 0.9) 100%);
     border: 2px solid var(--border-color);
-    border-radius: 12px;
-    padding: 25px;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 30px;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+    backdrop-filter: blur(20px);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .card::before {
@@ -103,19 +142,33 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
+    height: 4px;
     background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
+.card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.1) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px) scale(1.02);
     border-color: var(--accent-blue);
-    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 212, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .card:hover::before {
+    opacity: 1;
+}
+
+.card:hover::after {
     opacity: 1;
 }
 
@@ -145,14 +198,17 @@ body {
 }
 
 .value {
-    font-size: 2.5em;
-    font-weight: 700;
+    font-size: 3em;
+    font-weight: 800;
     color: var(--accent-blue);
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    letter-spacing: -2px;
 }
 
 .unit {
-    font-size: 1.2em;
+    font-size: 1.3em;
     color: var(--text-secondary);
+    font-weight: 600;
 }
 
 .card-footer {
@@ -173,43 +229,51 @@ body {
 
 .status-badge {
     display: inline-block;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     font-size: 1.1em;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .status-badge.full {
-    background-color: rgba(6, 168, 125, 0.2);
+    background: linear-gradient(135deg, rgba(6, 168, 125, 0.3) 0%, rgba(0, 255, 136, 0.2) 100%);
     color: var(--accent-green);
-    border: 1px solid var(--accent-green);
+    border: 2px solid var(--accent-green);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
 }
 
 .status-badge.medium {
-    background-color: rgba(255, 140, 0, 0.2);
+    background: linear-gradient(135deg, rgba(255, 140, 0, 0.3) 0%, rgba(255, 170, 0, 0.2) 100%);
     color: var(--accent-orange);
-    border: 1px solid var(--accent-orange);
+    border: 2px solid var(--accent-orange);
+    box-shadow: 0 0 20px rgba(255, 140, 0, 0.4);
 }
 
 .status-badge.low {
-    background-color: rgba(255, 68, 68, 0.2);
+    background: linear-gradient(135deg, rgba(255, 68, 68, 0.3) 0%, rgba(255, 100, 100, 0.2) 100%);
     color: var(--accent-red);
-    border: 1px solid var(--accent-red);
+    border: 2px solid var(--accent-red);
+    box-shadow: 0 0 20px rgba(255, 68, 68, 0.4);
+    animation: pulse 2s infinite;
 }
 
 .status-badge.normal {
-    background-color: rgba(6, 168, 125, 0.2);
+    background: linear-gradient(135deg, rgba(6, 168, 125, 0.3) 0%, rgba(0, 255, 136, 0.2) 100%);
     color: var(--accent-green);
-    border: 1px solid var(--accent-green);
+    border: 2px solid var(--accent-green);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
 }
 
 .status-badge.event {
-    background-color: rgba(255, 68, 68, 0.2);
+    background: linear-gradient(135deg, rgba(255, 68, 68, 0.3) 0%, rgba(255, 100, 100, 0.2) 100%);
     color: var(--accent-red);
-    border: 1px solid var(--accent-red);
+    border: 2px solid var(--accent-red);
     animation: pulse 1s infinite;
+    box-shadow: 0 0 20px rgba(255, 68, 68, 0.6);
 }
 
 /* ============================================
@@ -227,18 +291,26 @@ body {
 }
 
 .chart-container {
-    background: linear-gradient(135deg, rgba(26, 31, 58, 0.8) 0%, rgba(42, 48, 80, 0.8) 100%);
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.9) 0%, rgba(42, 48, 80, 0.9) 100%);
     border: 2px solid var(--border-color);
-    border-radius: 12px;
-    padding: 25px;
-    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 30px;
+    backdrop-filter: blur(20px);
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.chart-container:hover {
+    border-color: var(--accent-blue);
+    box-shadow: 0 15px 40px rgba(0, 212, 255, 0.2);
 }
 
 .chart-container h3 {
     color: var(--accent-blue);
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    font-size: 1.2em;
 }
 
 .chart-container canvas {
@@ -254,11 +326,12 @@ body {
 }
 
 .table-wrapper {
-    background: linear-gradient(135deg, rgba(26, 31, 58, 0.8) 0%, rgba(42, 48, 80, 0.8) 100%);
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.9) 0%, rgba(42, 48, 80, 0.9) 100%);
     border: 2px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .readings-table {
@@ -267,32 +340,33 @@ body {
 }
 
 .readings-table thead {
-    background: linear-gradient(135deg, rgba(0, 102, 204, 0.2) 0%, rgba(0, 168, 232, 0.2) 100%);
+    background: linear-gradient(135deg, rgba(0, 102, 204, 0.3) 0%, rgba(0, 168, 232, 0.3) 100%);
     border-bottom: 2px solid var(--border-color);
 }
 
 .readings-table th {
-    padding: 15px;
+    padding: 18px;
     text-align: left;
     color: var(--accent-blue);
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.9em;
+    letter-spacing: 1.5px;
+    font-size: 0.95em;
 }
 
 .readings-table td {
-    padding: 12px 15px;
-    border-bottom: 1px solid var(--border-color);
+    padding: 15px 18px;
+    border-bottom: 1px solid rgba(42, 48, 80, 0.5);
     color: var(--text-primary);
 }
 
 .readings-table tbody tr {
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .readings-table tbody tr:hover {
-    background-color: rgba(0, 212, 255, 0.05);
+    background-color: rgba(0, 212, 255, 0.08);
+    border-left: 4px solid var(--accent-blue);
 }
 
 .readings-table tbody tr:last-child td {
@@ -320,32 +394,138 @@ body {
 }
 
 .stat-box {
-    background: linear-gradient(135deg, rgba(26, 31, 58, 0.8) 0%, rgba(42, 48, 80, 0.8) 100%);
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.9) 0%, rgba(42, 48, 80, 0.9) 100%);
     border: 2px solid var(--border-color);
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 16px;
+    padding: 30px;
     text-align: center;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+    backdrop-filter: blur(20px);
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
 }
 
 .stat-box:hover {
     border-color: var(--accent-blue);
-    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+    box-shadow: 0 15px 40px rgba(0, 212, 255, 0.3);
+    transform: translateY(-5px);
+}
+
+.stat-box:hover::before {
+    opacity: 1;
 }
 
 .stat-box h4 {
     color: var(--text-secondary);
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-    font-size: 0.9em;
+    letter-spacing: 1.5px;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+    font-weight: 700;
 }
 
 .stat-value {
-    font-size: 2em;
-    font-weight: 700;
+    font-size: 2.5em;
+    font-weight: 800;
     color: var(--accent-blue);
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+}
+
+/* ============================================
+   AI ANALYSIS SECTION
+   ============================================ */
+
+.ai-section {
+    margin-bottom: 40px;
+}
+
+.ai-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.ai-card {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.9) 0%, rgba(42, 48, 80, 0.9) 100%);
+    border: 2px solid var(--accent-purple);
+    border-radius: 16px;
+    padding: 25px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(179, 102, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.ai-card:hover {
+    border-color: var(--accent-pink);
+    box-shadow: 0 15px 40px rgba(179, 102, 255, 0.3);
+    transform: translateY(-5px);
+}
+
+.ai-card h3 {
+    color: var(--accent-purple);
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ai-content {
+    color: var(--text-primary);
+    line-height: 1.8;
+    font-size: 0.95em;
+}
+
+.ai-status {
+    border-color: var(--accent-orange);
+}
+
+.ai-status:hover {
+    border-color: var(--accent-red);
+}
+
+.ai-status-badge {
+    display: inline-block;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.3em;
+    text-shadow: 0 0 20px rgba(255, 140, 0, 0.5);
+}
+
+.ai-status-badge.safe {
+    background: linear-gradient(135deg, rgba(6, 168, 125, 0.3) 0%, rgba(0, 255, 136, 0.2) 100%);
+    color: var(--accent-green);
+    border: 2px solid var(--accent-green);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+}
+
+.ai-status-badge.warning {
+    background: linear-gradient(135deg, rgba(255, 140, 0, 0.3) 0%, rgba(255, 170, 0, 0.2) 100%);
+    color: var(--accent-orange);
+    border: 2px solid var(--accent-orange);
+    box-shadow: 0 0 20px rgba(255, 140, 0, 0.4);
+    animation: pulse 2s infinite;
+}
+
+.ai-status-badge.danger {
+    background: linear-gradient(135deg, rgba(255, 68, 68, 0.3) 0%, rgba(255, 100, 100, 0.2) 100%);
+    color: var(--accent-red);
+    border: 2px solid var(--accent-red);
+    box-shadow: 0 0 20px rgba(255, 68, 68, 0.6);
+    animation: pulse 1s infinite;
 }
 
 /* ============================================
@@ -354,11 +534,14 @@ body {
 
 .footer {
     text-align: center;
-    padding: 20px;
+    padding: 30px;
     color: var(--text-secondary);
-    border-top: 1px solid var(--border-color);
-    margin-top: 40px;
-    font-size: 0.9em;
+    border-top: 2px solid var(--border-color);
+    margin-top: 60px;
+    font-size: 0.95em;
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.5) 0%, rgba(42, 48, 80, 0.5) 100%);
+    backdrop-filter: blur(10px);
+    letter-spacing: 0.5px;
 }
 
 /* ============================================
