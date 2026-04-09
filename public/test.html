@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+    <style>
+        body { background: #0a0e27; color: #e0e0e0; font-family: Arial; padding: 20px; }
+        .box { background: #1a1f3a; border: 1px solid #2a3050; padding: 15px; margin: 10px 0; border-radius: 8px; }
+        h2 { color: #00d4ff; }
+        .success { color: #00ff88; }
+        .error { color: #ff4444; }
+    </style>
+</head>
+<body>
+    <h1>IoT Dashboard - API Test</h1>
+    
+    <div class="box">
+        <h2>Latest Data</h2>
+        <div id="latest"></div>
+    </div>
+    
+    <div class="box">
+        <h2>History</h2>
+        <div id="history"></div>
+    </div>
+    
+    <div class="box">
+        <h2>Statistics</h2>
+        <div id="stats"></div>
+    </div>
+
+    <script>
+        async function loadData() {
+            try {
+                // Fetch latest
+                const latestRes = await fetch('/api/latest');
+                const latestData = await latestRes.json();
+                document.getElementById('latest').innerHTML = `
+                    <p class="success">✓ Connected</p>
+                    <p>Temperature: ${latestData.data.temperature}°C</p>
+                    <p>Humidity: ${latestData.data.humidity}%</p>
+                    <p>Threshold: ${latestData.data.threshold_value}°C</p>
+                    <p>Battery: ${latestData.data.battery_percentage}%</p>
+                    <p>Battery Status: ${latestData.data.battery_status}</p>
+                    <p>Event Status: ${latestData.data.event_status}</p>
+                `;
+                
+                // Fetch history
+                const historyRes = await fetch('/api/history');
+                const historyData = await historyRes.json();
+                document.getElementById('history').innerHTML = `
+                    <p class="success">✓ ${historyData.count} readings found</p>
+                `;
+                
+                // Fetch stats
+                const statsRes = await fetch('/api/stats');
+                const statsData = await statsRes.json();
+                document.getElementById('stats').innerHTML = `
+                    <p class="success">✓ Statistics loaded</p>
+                    <p>Total: ${statsData.data.total_readings}</p>
+                    <p>Avg Temp: ${statsData.data.avg_temperature}°C</p>
+                    <p>Avg Humidity: ${statsData.data.avg_humidity}%</p>
+                `;
+            } catch (error) {
+                document.getElementById('latest').innerHTML = `<p class="error">✗ Error: ${error.message}</p>`;
+            }
+        }
+        
+        loadData();
+        setInterval(loadData, 2000);
+    </script>
+</body>
+</html>

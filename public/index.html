@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino IoT Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🚀 Arduino IoT Dashboard</h1>
+                <p class="subtitle">Real-time Sensor Monitoring System</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Live Data Cards Section -->
+            <section class="cards-section">
+                <h2 class="section-title">Live Sensor Data</h2>
+                <div class="cards-grid">
+                    <!-- Temperature Card -->
+                    <div class="card temperature-card">
+                        <div class="card-header">
+                            <h3>Temperature</h3>
+                            <span class="card-icon">🌡️</span>
+                        </div>
+                        <div class="card-value">
+                            <span id="temp-value" class="value">--</span>
+                            <span class="unit">°C</span>
+                        </div>
+                        <div class="card-footer">
+                            <small id="temp-time">Last: --</small>
+                        </div>
+                    </div>
+
+                    <!-- Humidity Card -->
+                    <div class="card humidity-card">
+                        <div class="card-header">
+                            <h3>Humidity</h3>
+                            <span class="card-icon">💧</span>
+                        </div>
+                        <div class="card-value">
+                            <span id="humidity-value" class="value">--</span>
+                            <span class="unit">%</span>
+                        </div>
+                        <div class="card-footer">
+                            <small id="humidity-time">Last: --</small>
+                        </div>
+                    </div>
+
+                    <!-- Threshold Card -->
+                    <div class="card threshold-card">
+                        <div class="card-header">
+                            <h3>Threshold</h3>
+                            <span class="card-icon">⚙️</span>
+                        </div>
+                        <div class="card-value">
+                            <span id="threshold-value" class="value">--</span>
+                            <span class="unit">°C</span>
+                        </div>
+                        <div class="card-footer">
+                            <small id="threshold-time">Last: --</small>
+                        </div>
+                    </div>
+
+                    <!-- Battery Percentage Card -->
+                    <div class="card battery-card">
+                        <div class="card-header">
+                            <h3>Battery</h3>
+                            <span class="card-icon">🔋</span>
+                        </div>
+                        <div class="card-value">
+                            <span id="battery-value" class="value">--</span>
+                            <span class="unit">%</span>
+                        </div>
+                        <div class="card-footer">
+                            <small id="battery-time">Last: --</small>
+                        </div>
+                    </div>
+
+                    <!-- Battery Status Card -->
+                    <div class="card status-card">
+                        <div class="card-header">
+                            <h3>Battery Status</h3>
+                            <span class="card-icon">⚡</span>
+                        </div>
+                        <div class="card-value">
+                            <span id="battery-status" class="status-badge">--</span>
+                        </div>
+                        <div class="card-footer">
+                            <small id="battery-status-time">Last: --</small>
+                        </div>
+                    </div>
+
+                    <!-- Event Status Card -->
+                    <div class="card event-card">
+                        <div class="card-header">
+                            <h3>Event Status</h3>
+                            <span class="card-icon">🚨</span>
+                        </div>
+                        <div class="card-value">
+                            <span id="event-status" class="status-badge">--</span>
+                        </div>
+                        <div class="card-footer">
+                            <small id="event-status-time">Last: --</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <h2 class="section-title">Historical Data Charts</h2>
+                <div class="charts-grid">
+                    <!-- Temperature Chart -->
+                    <div class="chart-container">
+                        <h3>Temperature Trend</h3>
+                        <canvas id="temperatureChart"></canvas>
+                    </div>
+
+                    <!-- Humidity Chart -->
+                    <div class="chart-container">
+                        <h3>Humidity Trend</h3>
+                        <canvas id="humidityChart"></canvas>
+                    </div>
+
+                    <!-- Battery Chart -->
+                    <div class="chart-container">
+                        <h3>Battery Level Trend</h3>
+                        <canvas id="batteryChart"></canvas>
+                    </div>
+
+                    <!-- Threshold Chart -->
+                    <div class="chart-container">
+                        <h3>Threshold Trend</h3>
+                        <canvas id="thresholdChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Readings Table -->
+            <section class="table-section">
+                <h2 class="section-title">Recent Readings (Last 20)</h2>
+                <div class="table-wrapper">
+                    <table class="readings-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Temperature (°C)</th>
+                                <th>Humidity (%)</th>
+                                <th>Threshold (°C)</th>
+                                <th>Battery (%)</th>
+                                <th>Battery Status</th>
+                                <th>Event Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="readings-tbody">
+                            <tr>
+                                <td colspan="7" class="no-data">No data available yet. Waiting for Arduino to send data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Statistics Section -->
+            <section class="stats-section">
+                <h2 class="section-title">Today's Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h4>Total Readings</h4>
+                        <p id="stat-total" class="stat-value">0</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Avg Temperature</h4>
+                        <p id="stat-avg-temp" class="stat-value">--°C</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Avg Humidity</h4>
+                        <p id="stat-avg-humidity" class="stat-value">--%</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Events Detected</h4>
+                        <p id="stat-events" class="stat-value">0</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Arduino UNO R4 WiFi IoT Dashboard | Auto-refresh every 2 seconds</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
